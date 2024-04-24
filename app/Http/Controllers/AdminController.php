@@ -47,4 +47,17 @@ class AdminController extends Controller
         $post = Post::all();
         return view ('admin.show_post',compact('post'));
     }
+
+    public function delete_post($id)
+    {
+        $post = Post::find($id);
+        $post -> delete();
+        return redirect()->back()->with('message','Post Deleted Successfully');
+    }
+
+    public function edit_page($id)
+    {
+        $post = Post::find($id);
+        return view('admin.edit_page',compact('post'));
+    }
 }

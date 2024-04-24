@@ -38,8 +38,23 @@
       <!-- Sidebar Navigation-->
       @include('admin.sidebar')
       <!-- Sidebar Navigation end-->
+
       <div class="page-content">
+
+      @if(session()->has('message'))
+
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+
+            {{session()->get('message')}}
+
+        </div>
+
+      @endif
+
+
         <h1 class="title_design">All Post</h1>
+
         <table class="table_design">
             <tr class="th_design">
                 <th>Post Title</th>
@@ -48,6 +63,8 @@
                 <th>Usertype</th>
                 <th>Post Status</th>
                 <th>Image</th>
+                <th>Delete</th>
+                <th>Edit</th>
             </tr>
 
 
@@ -60,6 +77,12 @@
                 <td>{{$post->post_status}}</td>
                 <td>
                     <img class="img_design" src="postimage/{{$post->image}}">
+                </td>
+                <td>
+                    <a href="{{url('delete_post', $post->id)}}" class="btn btn-danger" onclick="return confirm('Are you sure to Delete This?')">Delete</a>
+                </td>
+                <td>
+                    <a href="{{url('edit_page', $post->id)}}" class="btn btn-success">Edit</a>
                 </td>
             </tr>
             @endforeach
