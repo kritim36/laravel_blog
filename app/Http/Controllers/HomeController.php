@@ -16,7 +16,7 @@ class HomeController extends Controller
     {
         if(Auth::id())
         {
-            $post = Post::all();
+            $post = Post::where('post_status','=','active')->get();
             $usertype=Auth()->user()->usertype;
 
             if($usertype == 'user')
@@ -42,7 +42,7 @@ class HomeController extends Controller
 
     public function homepage()
     {
-        $post = Post::all();
+        $post = Post::where('post_status','=','active')->get();
         return view('home.homepage', compact('post'));
     }
 
@@ -99,5 +99,27 @@ class HomeController extends Controller
         $data = Post::find($id);
         $data->delete();
         return redirect()->back()->with('message', 'Post deleted successfully');
+    }
+
+    public function post_update_page($id)
+    {
+        $data = Post::find($id);
+        return view('home.post_update_page', compact('data'));
+    }
+
+    public function update_post_data(Request $request, $id)
+    {
+        $data = Post::find($id);
+        $data->title = $request ->title;
+        $data->description = $request ->description;
+        $image = $request->image;
+        if($image)
+        {
+            $imagename=time().'.'.$image->getClientOriginalExtension();
+            $request->image->move('postimage',$imagename);
+            $data ->image = $imagename;
+        }
+        $data ->save();
+        return redirect()->back()->with('message','Data updated successfully');
     }
 }
