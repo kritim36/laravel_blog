@@ -85,4 +85,19 @@ class HomeController extends Controller
         $post ->save();
         return redirect()->back()->with('message','Post Added Successfully');
     }
+
+    public function my_post()
+    {
+        $user = Auth::user();
+        $userid = $user->id;
+        $data = Post::where('user_id','=',$userid)->get();
+        return view('home.my_post',compact('data'));
+    }
+
+    public function my_post_del($id)
+    {
+        $data = Post::find($id);
+        $data->delete();
+        return redirect()->back()->with('message', 'Post deleted successfully');
+    }
 }
